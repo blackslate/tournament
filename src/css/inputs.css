@@ -1,0 +1,46 @@
+
+#inputs {
+  padding: 0;
+
+  div.input {
+    display: block;
+    margin-bottom: 1em;
+
+    & span:first-child {
+      display: block;
+      font-weight: bold;
+      &::after {
+        content: ":";
+      }
+    }
+  }
+
+  div.range,
+  div.info {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      vertical-align: middle;
+    }
+    & span:last-child {
+      color: #ccc;
+      background-color: #444;
+    }
+  }
+
+  div.simple {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  input[type=text],
+  div.info span:last-child {
+    width: 3em;
+    margin-left: 0.5em;
+    padding: 0.25em 0.5em;
+    text-align: right;
+    font-family: inherit;
+    font-size: inherit;
+  }
+}
