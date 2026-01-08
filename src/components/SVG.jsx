@@ -16,11 +16,12 @@ const COLOURS = {
   curve: "#fff9"
 }
 
-const STROKE_WIDTHS = {
+const DIMENSIONS = {
   border: "0.25",
   grid: "0.25",
   control: "0.25",
-  curve: "0.5"
+  curve: "0.5",
+  radius: "1"
 }
 
 
@@ -45,7 +46,7 @@ export const SVG = (props) => {
     By: 25,
     Nx: 100, // fixed
     Ny: 100 * (1 - lowest / highest),
-    r:  1.5, // arbitrary
+    r:  DIMENSIONS.radius, // arbitrary
 
     Lx: 100 * (lowSeedRank / playerCount),
     Ly: 100 * (1 - lowSeed / highest),
@@ -57,11 +58,11 @@ export const SVG = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
       viewBox="-1 -1 102 102"
 
-      stroke-width={`${STROKE_WIDTHS.border}`}
-      stroke-linecap="round"
+      strokeWidth={`${DIMENSIONS.border}`}
+      strokeLinecap="round"
       fill="none"
     >
       <style>{`
@@ -84,7 +85,7 @@ export const SVG = (props) => {
       >
         {/* GRID */}
         <g
-          stroke-width={`${STROKE_WIDTHS.grid}`}
+          strokeWidth={`${DIMENSIONS.grid}`}
         >
           {/* LOW SEED RANK... */}
           <g
@@ -101,7 +102,7 @@ export const SVG = (props) => {
                stroke="none"
                x={`${xy.Lx - 1}`}
                y="99"
-               class="text"
+               className="text"
                transform={`rotate(-90 ${xy.Lx - 1} 99)`}
             >
               {`Top seeds: rank from 1 to ${lowSeedRank}`}
@@ -117,7 +118,7 @@ export const SVG = (props) => {
                stroke="none"
                x={`${xy.Lx + 1}`}
                y={`${xy.Ly - 1}`}
-               class="text"
+               className="text"
             >
               {`Rating from ${highest} down to ${lowSeed}`}
             </text>
@@ -137,7 +138,7 @@ export const SVG = (props) => {
                stroke="none"
                x={`${xy.Sx - 1}`}
                y="99"
-               class="text"
+               className="text"
                transform={`rotate(-90 ${xy.Sx - 1} 99)`}
             >
               {`Second seeds: rank from ${lowSeedRank} to ${lastSeedRank}`}
@@ -153,7 +154,7 @@ export const SVG = (props) => {
                stroke="none"
                x={`${xy.Sx + 1}`}
                y={`${xy.Sy - 1}`}
-               class="text"
+               className="text"
             >
               {`Rating from ${lowSeed} down to ${lastSeed}`}
             </text>
@@ -162,7 +163,7 @@ export const SVG = (props) => {
 
         {/* CONTROL POINTS */}
         <g
-          stroke-width={`${STROKE_WIDTHS.control}`}
+          strokeWidth={`${DIMENSIONS.control}`}
         >
           <g
             stroke={`${COLOURS.control1}`}
@@ -209,7 +210,7 @@ export const SVG = (props) => {
               ${xy.Nx} ${xy.Ny}
           `}
           stroke={`${COLOURS.curve}`}
-          stroke-width={`${STROKE_WIDTHS.curve}`}
+          strokeWidth={`${DIMENSIONS.curve}`}
         />
       </g>
     </svg>

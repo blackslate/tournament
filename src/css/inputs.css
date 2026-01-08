@@ -3,14 +3,13 @@
   --dim: #bbb;
 
   position: absolute;
-  top: 2em;
-  right: 2em;
-
-  padding: 0;
+  top: 0;
+  right: 0;
+  padding: 2em;
+  background-color: #0002;
 
   div.input {
     display: block;
-    /* margin-bottom: 1em; */
   }
 
   span:first-child {

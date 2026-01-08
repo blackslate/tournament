@@ -1,5 +1,5 @@
 /**
- * src/logic/Provider.jsx
+ * graph/logic/Provider.jsx
  *
  * description
  */
@@ -13,7 +13,11 @@ import {
 } from 'react'
 import { reducer, initialState } from './Reducer'
 
-const URLS_FILE = "/tournament/tournaments.json"
+const SITE_ROOT  = "/tournament/"
+const JSON_ROOT  = SITE_ROOT + "json/"
+const GRAPH_ROOT = SITE_ROOT + "graph/"
+const GRAPH_EXT  = ".png"
+const URLS_FILE  = "tournaments.json"
 
 
 
@@ -23,6 +27,9 @@ export const Context = createContext()
 
 export const Provider = ({ children }) => {
   const [ urls, setUrls ] = useState([])
+  const [ graph, setGraph ] = useState("")
+  
+  console.log("graph:", graph)
   
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const {
@@ -40,9 +47,12 @@ export const Provider = ({ children }) => {
 
 
   const getUrls = () => {
-    fetch(URLS_FILE)
+    const url = JSON_ROOT + URLS_FILE
+    console.log("url:", url)
+    fetch(JSON_ROOT + URLS_FILE)
     .then(response => response.json())
-    .then(json => setUrls(json))
+    .then(json => json.map(url => JSON_ROOT + url))
+    .then(urls => setUrls(urls))
     .catch(error => console.error(error))
   }
 
@@ -106,13 +116,17 @@ export const Provider = ({ children }) => {
   }
 
 
-  const treatImport = json => {
+  const treatImport = (json, url) => {
     // Assume json ordered by rating (item 0 in each array)
     // [ [2426, "ripol", 1],
     //   [2266, "geniusshi", 3],
     //   ...,
     //   [100, "gazi0244", 95]
     // ]
+
+    url = url
+          .replace(/^[a-z\/]+/i, "")
+          .replace(".json", GRAPH_EXT)
     
     let data = {
       highest:         0,
@@ -146,14 +160,15 @@ export const Provider = ({ children }) => {
     data.lastSeed      = json[groupCount * 2][0]
 
     setFromJSON(data)
+    setGraph(GRAPH_ROOT + url)
   }
 
 
   const importFrom = url => {
     fetch(url)
     .then(response => response.json())
-    .then(treatImport)
-    .catch(error => {})
+    .then(json => treatImport(json, url))
+    .catch(error => console.error(error))
   }
 
 
@@ -181,7 +196,8 @@ export const Provider = ({ children }) => {
 
         groupCount,
         lowSeedRank,
-        lastSeedRank
+        lastSeedRank,
+        graph
       }}
     >
       {children}

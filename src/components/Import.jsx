@@ -21,7 +21,10 @@ export const Import = () => {
       key={url}
       value={url}
     >
-      {url.replace(".json", "")}
+      { url
+        .replace(/^[a-z\/]+/i, "")
+        .replace(".json", "")
+      }
     </option>
   ))
   options.unshift(<option
