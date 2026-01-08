@@ -114,7 +114,7 @@ export const Input = ({ name, value, setter, max, min  }) => {
     return (
       <>
         <div className="info">
-          <span>{name}</span>
+          <span className="dim">{name}</span>
           <span>{value}</span>
         </div>
       </>

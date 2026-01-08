@@ -20,6 +20,7 @@
 import { useContext } from 'react'
 import { Context } from '../logic/Provider'
 import { Input } from './Input'
+import { Import } from './Import'
 
 
 
@@ -41,7 +42,8 @@ export const Inputs = () => {
 
     groupCount,
     lowSeedRank,
-    lastSeedRank
+    lastSeedRank,
+    urls
   } = useContext(Context)
 
 
@@ -74,6 +76,8 @@ export const Inputs = () => {
 
   return (
     <div id="inputs">
+      <Import />
+      <hr />
       {settings}
     </div>
   )

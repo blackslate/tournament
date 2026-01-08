@@ -1,32 +1,41 @@
 
 #inputs {
+  --dim: #bbb;
+
   padding: 0;
 
   div.input {
     display: block;
-    margin-bottom: 1em;
+    /* margin-bottom: 1em; */
+  }
 
-    & span:first-child {
-      display: block;
-      font-weight: bold;
-      &::after {
-        content: ":";
-      }
+  span:first-child {
+    display: block;
+    font-weight: bold;
+    &::after {
+      content: ":";
     }
   }
 
   div.range,
-  div.info {
+  div.info,
+  div.import {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1em;
 
     input {
       vertical-align: middle;
     }
+    
     & span:last-child {
-      color: #ccc;
+      color: var(--dim);
       background-color: #444;
     }
+  }
+
+  & span.dim {
+    color: var(--dim);
   }
 
   div.simple {

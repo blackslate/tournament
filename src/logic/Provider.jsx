@@ -5,8 +5,16 @@
  */
 
 
-import { createContext, useState, useReducer } from 'react'
+import {
+  createContext,
+  useReducer,
+  useState,
+  useEffect
+} from 'react'
 import { reducer, initialState } from './Reducer'
+
+const URLS_FILE = "/tournament/tournaments.json"
+
 
 
 export const Context = createContext()
@@ -14,8 +22,10 @@ export const Context = createContext()
 
 
 export const Provider = ({ children }) => {
+  const [ urls, setUrls ] = useState([])
+  
   const [ state, dispatch ] = useReducer(reducer, initialState)
-  const  {
+  const {
     highest,
     lowest,
     playerCount,
@@ -29,7 +39,15 @@ export const Provider = ({ children }) => {
   } = state
 
 
-  const setHighest = (payload) => {
+  const getUrls = () => {
+    fetch(URLS_FILE)
+    .then(response => response.json())
+    .then(json => setUrls(json))
+    .catch(error => console.error(error))
+  }
+
+
+  const setHighest =  payload => {
     dispatch({
       type: "SET_HIGHEST",
       payload
@@ -37,7 +55,7 @@ export const Provider = ({ children }) => {
   }
 
 
-  const setLowest = (payload) => {
+  const setLowest =  payload => {
     dispatch({
       type: "SET_LOWEST",
       payload
@@ -45,7 +63,7 @@ export const Provider = ({ children }) => {
   }
 
 
-  const setPlayersPerGroup = (payload) => {
+  const setPlayersPerGroup =  payload => {
     dispatch({
       type: "SET_PLAYERS_PER_GROUP",
       payload
@@ -53,7 +71,7 @@ export const Provider = ({ children }) => {
   }
 
 
-  const setPlayerCount = (payload) => {
+  const setPlayerCount =  payload => {
     dispatch({
       type: "SET_PLAYER_COUNT",
       payload
@@ -61,7 +79,7 @@ export const Provider = ({ children }) => {
   }
 
 
-  const setLowSeed = (payload) => {
+  const setLowSeed =  payload => {
     dispatch({
       type: "SET_LOW_SEED",
       payload
@@ -69,12 +87,77 @@ export const Provider = ({ children }) => {
   }
 
 
-  const setLastSeed = (payload) => {
+  const setLastSeed =  payload => {
     dispatch({
       type: "SET_LAST_SEED",
       payload
     })
   }
+
+
+  const setFromJSON = data => {
+    setHighest(data.highest)
+    setLowest(data.lowest)
+    setPlayersPerGroup(data.playersPerGroup)
+    setPlayerCount(data.playerCount)
+    setLowSeed(data.lowSeed)
+    setLastSeed(data.lastSeed)
+    
+  }
+
+
+  const treatImport = json => {
+    // Assume json ordered by rating (item 0 in each array)
+    // [ [2426, "ripol", 1],
+    //   [2266, "geniusshi", 3],
+    //   ...,
+    //   [100, "gazi0244", 95]
+    // ]
+    
+    let data = {
+      highest:         0,
+      lowest:          9999,
+      playerCount:     json.length,
+      playersPerGroup: 0,
+      lowSeed:         0,
+      lastSeed:        0
+    }
+    let groupCount = 0 // set within reduce callback
+
+    data = json.reduce(( data, player, index ) => {
+      const [ rating,, groupNumber ] = player
+        if ( data.highest < rating ) {
+          data.highest = rating 
+        }
+        if ( data.lowest > rating ) {
+          data.lowest = rating 
+        }
+        if ( groupCount < groupNumber ) {
+          groupCount = groupNumber 
+        }
+
+      return data
+    }, data)
+
+    data.playersPerGroup = Math.ceil(
+      data.playerCount / groupCount
+    )
+    data.lowSeed       = json[groupCount][0]
+    data.lastSeed      = json[groupCount * 2][0]
+
+    setFromJSON(data)
+  }
+
+
+  const importFrom = url => {
+    fetch(url)
+    .then(response => response.json())
+    .then(treatImport)
+    .catch(error => {})
+  }
+
+
+  useEffect(getUrls, [])
 
 
   return (
@@ -86,6 +169,7 @@ export const Provider = ({ children }) => {
         playerCount,
         lowSeed,
         lastSeed,
+        urls,
 
         setHighest,
         setLowest,
@@ -93,6 +177,7 @@ export const Provider = ({ children }) => {
         setPlayerCount,
         setLowSeed,
         setLastSeed,
+        importFrom,
 
         groupCount,
         lowSeedRank,

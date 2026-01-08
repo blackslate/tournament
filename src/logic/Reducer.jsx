@@ -70,7 +70,7 @@ const setPlayersPerGroup = (state, playersPerGroup) => {
   lastSeedRank = groupCount * 2
   return {
     ...state,
-    playersPerGroup, 
+    playersPerGroup,
     groupCount,
     lowSeedRank,
     lastSeedRank
@@ -85,7 +85,8 @@ const setPlayerCount = (state, playerCount) => {
   lastSeedRank = groupCount * 2
   return {
     ...state,
-    playersPerGroup, 
+    playersPerGroup,
+    playerCount,
     groupCount,
     lowSeedRank,
     lastSeedRank
