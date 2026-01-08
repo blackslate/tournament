@@ -8,24 +8,26 @@ import { Context } from '../logic/Provider'
 
 
 const COLOURS = {
-  border: "#888",
-  top: "#090",
-  second: "#c60",
+  border:   "#888",
+  top:      "#090",
+  second:   "#c60",
   control1: "#30f",
+  slope:    "#69f",
   control2: "#06d",
-  curve: "#fff9"
+  curve:    "#fff9"
 }
 
 const DIMENSIONS = {
-  border: "0.25",
-  grid: "0.25",
+  border:  "0.25",
+  grid:    "0.125",
   control: "0.25",
-  curve: "0.5",
-  radius: "1"
+  slope:   "0.25",
+  curve:   "0.5",
+  radius:  "1"
 }
 
 
-export const SVG = (props) => {
+export const SVG = () => {
   const {
     highest,
     lowest,
@@ -38,14 +40,21 @@ export const SVG = (props) => {
 
 
   const xy = {
-    Mx: 0, // fixed
-    My: 0, // fixed
-    Ax: 0, // fixed
-    Ay: 37.5,
-    Bx: 50,
+    Mx: 0,      // fixed
+    My: 0,      // fixed
+    Nx: 100,    // fixed
+    Ny: 100 * (1 - lowest / highest), // at least 100
+
+    Ax: 0,      // fixed
+    Ay: 39,     // vertical position on left axis
     By: 25,
-    Nx: 100, // fixed
-    Ny: 100 * (1 - lowest / highest),
+    Ox: 45,     // horizontal position on top axis < 100
+    get slope() {
+      return this.Ny / (100 - this.Ox) // this.Ox < 100
+    },
+    get Bx() {
+      return (this.By / this.slope) + this.Ox
+    },
     r:  DIMENSIONS.radius, // arbitrary
 
     Lx: 100 * (lowSeedRank / playerCount),
@@ -53,6 +62,8 @@ export const SVG = (props) => {
     Sx: 100 * (lastSeedRank / playerCount),
     Sy: 100 * (1 - lastSeed / highest),
   }
+
+  console.log("Ox:", xy.Ox, "Ny", xy.Ny, "slope:", xy.slope, "Bx", xy.Bx)
 
 
   return (
@@ -165,6 +176,7 @@ export const SVG = (props) => {
         <g
           strokeWidth={`${DIMENSIONS.control}`}
         >
+          {/* DARK BLUE VERTICAL CONTROL 1 */}
           <g
             stroke={`${COLOURS.control1}`}
             fill={`${COLOURS.control1}`}
@@ -182,9 +194,34 @@ export const SVG = (props) => {
               r= {`${xy.r}`}
             />
           </g>
+          
+        
+          {/* LIGHT HORIZONTAL SLOPE CONTROL*/}
+          <g
+            stroke={`${COLOURS.slope}`}
+            fill={`${COLOURS.control2}`}
+            strokeWidth={`${DIMENSIONS.slope}`}
+            strokeDasharray="1, 1"
+          >
+            <line
+              x1={`${xy.Ox}`}
+              y1="0"
+              x2={`${xy.Bx}`}
+              y2={`${xy.By}`}
+            />
+            <circle
+              id="control2"
+              cx={`${xy.Ox}`}
+              cy="0"
+              r= {`${xy.r}`}
+              stroke="none"
+            />
+          </g>
+          
+          {/* LIGHT BLUE PUPPET CONTROL 2 */}
           <g
             stroke={`${COLOURS.control2}`}
-            fill={`${COLOURS.control2}`}
+            fill={`${COLOURS.slope}`}
           >
             <line
               x1={`${xy.Nx}`}

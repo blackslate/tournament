@@ -1,8 +1,9 @@
 #graph {
+  /* Use same padding as around the SVG drawing */
   --edge: calc(1vmin / 1.02);
   --size: calc(100vmin - 2 * var(--edge));
+
   position: absolute;
-  opacity: 0.2;
   width: var(--size);
   height: var(--size);
   padding: var(--edge);
