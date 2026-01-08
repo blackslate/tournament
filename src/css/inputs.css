@@ -2,6 +2,10 @@
 #inputs {
   --dim: #bbb;
 
+  position: absolute;
+  top: 2em;
+  right: 2em;
+
   padding: 0;
 
   div.input {
