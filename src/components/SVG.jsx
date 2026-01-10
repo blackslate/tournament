@@ -30,7 +30,7 @@ const COLOURS = {
   control1: "#30f",
   slope:    "#69f",
   control2: "#06d",
-  curve:    "#fff9"
+  curve:    "#c00"
 }
 
 const DIMENSIONS = {
@@ -38,7 +38,7 @@ const DIMENSIONS = {
   grid:    "0.125",
   control: "0.25",
   slope:   "0.25",
-  curve:   "0.5",
+  curve:   "0.25",
   radius:  "1"
 }
 
@@ -55,7 +55,10 @@ export const SVG = () => {
     lowSeed,
     lowSeedRank,
     lastSeed,
-    lastSeedRank
+    lastSeedRank,
+    // Movable control points
+    xy,
+    setXY
   } = useContext(Context)
 
     // Known points for seed lines
@@ -66,15 +69,6 @@ export const SVG = () => {
 
   // Known point for lowest rating
   const P4y = 100 * (1 - lowest / highest) // at least 100
-
-
-  const [ xy, setXY ] = useState({
-    // Movable control points
-    P2y: 78,    // vertical position on left axis
-
-    P3x: 55,
-    P3y: 25
-  })
 
 
   const startDrag = ({ target }) => {
@@ -116,7 +110,6 @@ export const SVG = () => {
     }
 
     function drop() {
-      console.log("dropping")
       document.body.removeEventListener("mousemove", drag)
       document.body.removeEventListener("mouseup", drop)
     }
@@ -140,8 +133,8 @@ export const SVG = () => {
 
       {/* OUTLINE */}
       <rect
-        x={`$P1x`}
-        y={`$P1y`}
+        x="0"
+        y="0"
         width="100"
         height="100"
         stroke={`${COLOURS.border}`}
@@ -162,7 +155,7 @@ export const SVG = () => {
           >
             <line
               x1={`${SLx}`}
-              y1={`$P1y`}
+              y1={`${P1y}`}
               x2={`${SLx}`}
               y2={`${P4x}`}
             />
@@ -177,7 +170,7 @@ export const SVG = () => {
             </text>
           {/* ... AND RATING */}
             <line
-              x1={`$P1x`}
+              x1={`${P1x}`}
               y1={`${SLy}`}
               x2={`${P4x}`}
               y2={`${SLy}`}
@@ -198,7 +191,7 @@ export const SVG = () => {
           >
             <line
               x1={`${SSx}`}
-              y1={`$P1x`}
+              y1={`${P1x}`}
               x2={`${SSx}`}
               y2={`${P4x}`}
             />
@@ -213,7 +206,7 @@ export const SVG = () => {
             </text>
           {/* ... AND RATING */}
             <line
-              x1={`$P1x`}
+              x1={`${P1x}`}
               y1={`${SSy}`}
               x2={`${P4x}`}
               y2={`${SSy}`}
@@ -246,7 +239,7 @@ export const SVG = () => {
             />
             <circle
               id="control1"
-              cx={`${xy.P1x}`}
+              cx={`${P1x}`}
               cy={`${xy.P2y}`}
               r= {`${DIMENSIONS.radius}`}
               onMouseDown={startDrag}

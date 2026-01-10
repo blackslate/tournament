@@ -21,6 +21,7 @@ import { useContext } from 'react'
 import { Context } from '../logic/Provider'
 import { Input } from './Input'
 import { Import } from './Import'
+import { ControlPoints } from './ControlPoints'
 
 
 
@@ -79,6 +80,7 @@ export const Inputs = () => {
       <Import />
       <hr />
       {settings}
+      <ControlPoints />
     </div>
   )
 }

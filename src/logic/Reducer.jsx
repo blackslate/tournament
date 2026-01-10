@@ -13,16 +13,23 @@
 
 const initialState = {
   // Set manually
-  highest:         2426,
+  highest:         100,
   lowest:          100,
-  playersPerGroup: 12,
-  playerCount:     24582,
-  lowSeed:         1534,
-  lastSeed:        1374,
+  playersPerGroup: 2,
+  playerCount:     2,
+  lowSeed:         10,
+  lastSeed:        10,
   // Calculated
-  groupCount:      2049,
-  lowSeedRank:     2049, // duplicate of groupCount
-  lastSeedRank:    4098,
+  groupCount:      1,
+  lowSeedRank:     1, // duplicate of groupCount
+  lastSeedRank:    1,
+
+  // Control points
+  xy: {
+    P2y: 78,
+    P3x: 50,
+    P3y: 18
+  }
 }
 
 
@@ -46,6 +53,9 @@ const reducer = (state, action) => {
 
     case "SET_LAST_SEED":
       return setLastSeed(state, payload)
+
+    case "SET_XY":
+      return setXY(state, payload)
 
     default:
       return {...state}
@@ -101,6 +111,11 @@ const setLowSeed = (state, lowSeed) => {
 
 const setLastSeed = (state, lastSeed) => {
   return { ...state, lastSeed }
+}
+
+
+const setXY = (state, xy) => {
+  return { ...state, xy }
 }
 
 

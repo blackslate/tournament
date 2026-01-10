@@ -27,10 +27,7 @@ export const Context = createContext()
 
 export const Provider = ({ children }) => {
   const [ urls, setUrls ] = useState([])
-  const [ graph, setGraph ] = useState(GRAPH_ROOT+"2025"+GRAPH_EXT)
-  
-  console.log("graph:", graph)
-  
+  const [ graph, setGraph ] = useState("")
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const {
     highest,
@@ -42,7 +39,8 @@ export const Provider = ({ children }) => {
 
     groupCount,
     lowSeedRank,
-    lastSeedRank
+    lastSeedRank,
+    xy
   } = state
 
 
@@ -52,8 +50,14 @@ export const Provider = ({ children }) => {
     fetch(JSON_ROOT + URLS_FILE)
     .then(response => response.json())
     .then(json => json.map(url => JSON_ROOT + url))
-    .then(urls => setUrls(urls))
+    .then(applyUrls)
     .catch(error => console.error(error))
+  }
+
+
+  const applyUrls = urls => {
+    setUrls(urls)
+    importFrom(urls[0])
   }
 
 
@@ -105,6 +109,14 @@ export const Provider = ({ children }) => {
   }
 
 
+  const setXY =  payload => {
+    dispatch({
+      type: "SET_XY",
+      payload
+    })
+  }
+
+
   const setFromJSON = data => {
     setHighest(data.highest)
     setLowest(data.lowest)
@@ -136,6 +148,9 @@ export const Provider = ({ children }) => {
       lastSeed:        0
     }
     let groupCount = 0 // set within reduce callback
+
+    const xy = json.pop()
+    setXY(xy)
 
     data = json.reduce(( data, player, index ) => {
       const [ rating,, groupNumber ] = player
@@ -184,6 +199,7 @@ export const Provider = ({ children }) => {
         lowSeed,
         lastSeed,
         urls,
+        xy,
 
         setHighest,
         setLowest,
@@ -192,6 +208,7 @@ export const Provider = ({ children }) => {
         setLowSeed,
         setLastSeed,
         importFrom,
+        setXY,
 
         groupCount,
         lowSeedRank,
