@@ -1,0 +1,13 @@
+svg {
+  /* Show SVG above all other elements */
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+
+  #control1,
+  #control2 {
+    cursor: pointer;
+    pointer-events: fill;
+  }
+}

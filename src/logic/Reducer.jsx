@@ -13,16 +13,16 @@
 
 const initialState = {
   // Set manually
-  highest:         2296,
+  highest:         2426,
   lowest:          100,
   playersPerGroup: 12,
-  playerCount:     55388,
-  lowSeed:         1429,
-  lastSeed:        1227,
+  playerCount:     24582,
+  lowSeed:         1534,
+  lastSeed:        1374,
   // Calculated
-  groupCount:      4616,
-  lowSeedRank:     4616, // duplicate of groupCount
-  lastSeedRank:    9232,
+  groupCount:      2049,
+  lowSeedRank:     2049, // duplicate of groupCount
+  lastSeedRank:    4098,
 }
 
 

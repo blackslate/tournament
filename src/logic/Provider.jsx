@@ -27,7 +27,7 @@ export const Context = createContext()
 
 export const Provider = ({ children }) => {
   const [ urls, setUrls ] = useState([])
-  const [ graph, setGraph ] = useState("")
+  const [ graph, setGraph ] = useState(GRAPH_ROOT+"2025"+GRAPH_EXT)
   
   console.log("graph:", graph)
   
@@ -112,7 +112,6 @@ export const Provider = ({ children }) => {
     setPlayerCount(data.playerCount)
     setLowSeed(data.lowSeed)
     setLastSeed(data.lastSeed)
-    
   }
 
 

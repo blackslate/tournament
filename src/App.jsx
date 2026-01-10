@@ -14,8 +14,8 @@ export const App = () => {
     <Provider>
       <main>
         <Graph />
-        <SVG />
         <Inputs />
+        <SVG />
       </main>
     </Provider>
   )

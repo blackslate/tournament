@@ -15,7 +15,7 @@ export const Graph = () => {
     <img
       id="graph"
       src={graph}
-      alt="Ratings at start of tournament"
+      alt=""
     />
   )
 }

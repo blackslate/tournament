@@ -27,13 +27,14 @@ export const Import = () => {
       }
     </option>
   ))
-  options.unshift(<option
-      key="choose"
-      value=""
-      disabled
-    >
-      Year...
-    </option>)
+  // options.unshift(<option
+  //     key="choose"
+  //     value=""
+  //     disabled
+  //   >
+  //     Custom
+  //   </option>
+  // )
 
 
   return (
