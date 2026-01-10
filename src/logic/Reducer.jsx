@@ -26,9 +26,9 @@ const initialState = {
 
   // Control points
   xy: {
-    P2y: 78,
+    P2y: 50,
     P3x: 50,
-    P3y: 18
+    P3y: 50
   }
 }
 
